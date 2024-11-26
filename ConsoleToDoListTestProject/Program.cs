@@ -4,7 +4,10 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            ViewHandler viewhandler = new ViewHandler();
+            viewhandler.InputAwaiter();
+
+            Console.WriteLine("Program complite!/nPress any key.");
         }
     }
 }
