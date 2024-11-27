@@ -74,6 +74,7 @@ namespace ConsoleToDoListTestProject
                 case "start":
                     break;
                 case "help":
+                    CommandHelp();
                     break;
                 case "info":
                     CommandInfo();
@@ -104,10 +105,25 @@ namespace ConsoleToDoListTestProject
             switch(consoleArguments)
             {
                 case "":
-                    Console.WriteLine("/help show information about commands");
+                    Console.WriteLine("/help show information about commands");//Сдалять внятное описание
                     break;
                 case "/start":
-                    Console.WriteLine("/start show information about commands");
+                    Console.WriteLine("/start");//Need to complite
+                    break;
+                case "/help":
+                    Console.WriteLine("/help show information about commands");//Сдалять внятное описание
+                    break;
+                case "/info":
+                    Console.WriteLine("/info show information about verion and data creation of programm");
+                    break;
+                case "/exit":
+                    Console.WriteLine("/exit command to close programm");
+                    break;
+                case "/echo":
+                    Console.WriteLine("/echo write to console arguments after command \\echo");
+                    break;
+                default:
+                    Console.WriteLine("There is no such command like \"" + consoleArguments + '\"');
                     break;
             }
         }
