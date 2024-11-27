@@ -32,7 +32,27 @@ namespace ConsoleToDoListTestProject
 
         public void AddTaskToDoList()
         {
-
+            if (File.Exists(pathToDoList))
+            {
+                Console.WriteLine("Write task to add.");
+                string newTask = Console.ReadLine();
+                if (newTask == "")
+                {
+                    Console.WriteLine("New task is empty");
+                }
+                else if (newTask == null)
+                {
+                    Console.WriteLine("New task is empty");
+                }
+                else
+                {
+                    using (StreamWriter writer = new StreamWriter(pathToDoList, true))
+                    {
+                        writer.WriteLine(newTask);
+                        Console.WriteLine("Task " + newTask + " added.");
+                    }
+                }
+            }
         }
         public void RemoveTaskToDoList()
         {
