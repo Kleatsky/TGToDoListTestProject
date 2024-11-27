@@ -15,6 +15,7 @@ namespace ConsoleToDoListTestProject
         private readonly string pathUserName = @".\UserName.txt";
         private string userName;
         private bool programmStarted = false;//make true after command /start
+        ConsoleToDoTXTHandler consoleToDoTXTHandler;
 
         public ViewHandler()
         {
@@ -22,17 +23,19 @@ namespace ConsoleToDoListTestProject
             consoleCommand = new string("");
             consoleArguments = new string("");
 
-            //Если файла нет
-            using (StreamReader reader = new StreamReader(pathUserName))//Reading saved username
+            if (!File.Exists(pathUserName))
             {
-                string inputText = reader.ReadLine();
-                if (inputText != null && inputText != "")
+                using (StreamReader reader = new StreamReader(pathUserName))//Reading saved username
                 {
-                    userName = inputText;
-                }
-                else
-                {
-                    userName = new string("");
+                    string inputText = reader.ReadLine();
+                    if (inputText != null && inputText != "")
+                    {
+                        userName = inputText;
+                    }
+                    else
+                    {
+                        userName = new string("");
+                    }
                 }
             }
         }
@@ -137,6 +140,9 @@ namespace ConsoleToDoListTestProject
                 case string tempstring when tempstring == "echo" && programmStarted:
                     CommandEcho();
                     break;
+                case string tempstring when tempstring == "ShowToDoList" && programmStarted:
+                    consoleToDoTXTHandler.ShowToDoList();
+                    break;
                 default:
                     Console.WriteLine("There is no such command like \"" + consoleCommand + '\"');
                     break;
@@ -195,7 +201,10 @@ namespace ConsoleToDoListTestProject
         private void CommandStart()//сделать нормальную обработку имени если пусто зарание, а не в методе присвоения имени
         {
             programmStarted = true;
+            consoleToDoTXTHandler = new ConsoleToDoTXTHandler();
             Console.WriteLine("Programm start.");//сделать нормальное описание старта программы
+
+
             if (userName == "")
             {
                 Console.WriteLine("Hello unnamed user, please inpute your name");
@@ -217,7 +226,7 @@ namespace ConsoleToDoListTestProject
             {
                 userName = newUserName;
                 Console.WriteLine("Now your you name is " + userName);
-                using (StreamWriter writer = new StreamWriter(pathUserName, false))
+                using (StreamWriter writer = new StreamWriter(pathUserName, false))//Добавить обработку, если файл не может создасться
                 {
                     writer.WriteLine(userName);
                 }
