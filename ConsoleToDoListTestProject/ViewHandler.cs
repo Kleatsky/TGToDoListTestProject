@@ -23,7 +23,7 @@ namespace ConsoleToDoListTestProject
             consoleCommand = new string("");
             consoleArguments = new string("");
 
-            if (!File.Exists(pathUserName))
+            if (File.Exists(pathUserName))
             {
                 using (StreamReader reader = new StreamReader(pathUserName))//Reading saved username
                 {
@@ -42,7 +42,7 @@ namespace ConsoleToDoListTestProject
         public void InputAwaiter()
         {
             bool exitFlag = false;//false is meaning not exit circle
-            
+
             do
             {
                 if (!programmStarted)//сделать нормальную обработку после получения команды /start
@@ -77,7 +77,7 @@ namespace ConsoleToDoListTestProject
                     }
                     consoleGlobalArguments = Console.ReadLine();
                 }
-                
+
 
                 if (consoleGlobalArguments != null && consoleGlobalArguments.Length >= 4)
                 {
@@ -142,6 +142,12 @@ namespace ConsoleToDoListTestProject
                     break;
                 case string tempstring when tempstring == "ShowToDoList" && programmStarted:
                     consoleToDoTXTHandler.ShowToDoList();
+                    break;
+                case string tempstring when tempstring == "AddTaskToDoList" && programmStarted:
+                    consoleToDoTXTHandler.AddTaskToDoList();
+                    break;
+                case string tempstring when tempstring == "RemoveTaskToDoList" && programmStarted:
+                    consoleToDoTXTHandler.RemoveTaskToDoList();
                     break;
                 default:
                     Console.WriteLine("There is no such command like \"" + consoleCommand + '\"');
@@ -213,7 +219,7 @@ namespace ConsoleToDoListTestProject
             }
             else
             {
-                Console.WriteLine("Hello " + userName + ", if your name is not " + 
+                Console.WriteLine("Hello " + userName + ", if your name is not " +
                     userName + ", input your new name, or just press enter to continue.");
 
                 string inputText = Console.ReadLine();
