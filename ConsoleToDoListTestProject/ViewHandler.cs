@@ -11,17 +11,41 @@ namespace ConsoleToDoListTestProject
         private string consoleGlobalArguments;
         private string consoleCommand;
         private string consoleArguments;
+        private readonly string pathUserName = @".\UserName.txt";
+        private string userName;
 
         public ViewHandler()
         {
             consoleGlobalArguments = new string("");
+            consoleCommand = new string("");
+            consoleArguments = new string("");
+
+            using (StreamReader reader = new StreamReader(pathUserName))//Reading saved username
+            {
+                string text = reader.ReadLine();
+                if (text != null || text != "")
+                {
+                    userName = text;
+                }
+                else
+                {
+                    userName = new string("");
+                }
+            }
         }
         public void InputAwaiter()
         {
             bool exitFlag = false;//false is meaning not exit circle
             do
             {
-                Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                if (userName == "")
+                {
+                    Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                }
+                else
+                {
+                    Console.WriteLine("Hello " + userName +", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                }
                 consoleGlobalArguments = Console.ReadLine();
 
                 if (consoleGlobalArguments != null && consoleGlobalArguments.Length >= 4)
@@ -68,10 +92,10 @@ namespace ConsoleToDoListTestProject
         }
         private bool ArgumentHandler()//Переписать чтобы вместо возврата bool было по нормальному
         {
-            //реализовать проверку первой команды с вызовом их методов
             switch (consoleCommand)
             {
                 case "start":
+                    CommandStart();
                     break;
                 case "help":
                     CommandHelp();
@@ -102,10 +126,10 @@ namespace ConsoleToDoListTestProject
         }
         private void CommandHelp()//Console write arguments after command \echo
         {
-            switch(consoleArguments)
+            switch (consoleArguments)
             {
                 case "":
-                    Console.WriteLine("/help show information about commands");//Сдалять внятное описание
+                    Console.WriteLine("To use the program, press the command with the \"/\" symbol, showed at the beginning of the program.");
                     break;
                 case "/start":
                     Console.WriteLine("/start");//Need to complite
@@ -126,6 +150,12 @@ namespace ConsoleToDoListTestProject
                     Console.WriteLine("There is no such command like \"" + consoleArguments + '\"');
                     break;
             }
+        }
+        private void CommandStart()//Get name from user
+        {
+
+            Console.WriteLine("Program version: 0.2 console app");
+            Console.WriteLine("Data creation: 26.11.24");
         }
     }
 }
