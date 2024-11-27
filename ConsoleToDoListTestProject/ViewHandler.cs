@@ -47,12 +47,8 @@ namespace ConsoleToDoListTestProject
             {
                 if (!programmStarted)//сделать нормальную обработку после получения команды /start
                 {
-                    if (userName == "")//Что-нибудь придумать с именем из системы, либо оставить приветствие без него
+                    if (userName == "")
                     {
-                        //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;//Имя системы
-                        //string userName = Environment.UserName;//Имя пользователя в users
-                        //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
-
                         Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
                     }
                     else
@@ -63,12 +59,8 @@ namespace ConsoleToDoListTestProject
                 }
                 else
                 {
-                    if (userName == "")//Что-нибудь придумать с именем из системы, либо оставить приветствие без него
+                    if (userName == "")
                     {
-                        //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;//Имя системы
-                        //string userName = Environment.UserName;//Имя пользователя в users
-                        //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
-
                         Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/echo\", \"/exit\".");
                     }
                     else
