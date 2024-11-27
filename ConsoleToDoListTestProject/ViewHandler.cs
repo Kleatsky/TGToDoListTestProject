@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace ConsoleToDoListTestProject
         private string consoleArguments;
         private readonly string pathUserName = @".\UserName.txt";
         private string userName;
+        private bool programmStarted = false;//make true after command /start
 
         public ViewHandler()
         {
@@ -37,17 +39,42 @@ namespace ConsoleToDoListTestProject
         public void InputAwaiter()
         {
             bool exitFlag = false;//false is meaning not exit circle
+            
             do
             {
-                if (userName == "")
+                if (!programmStarted)//сделать нормальную обработку после получения команды /start
                 {
-                    Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                    if (userName == "")//Что-нибудь придумать с именем из системы, либо оставить приветствие без него
+                    {
+                        //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;//Имя системы
+                        //string userName = Environment.UserName;//Имя пользователя в users
+                        //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+
+                        Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                    }
+                    consoleGlobalArguments = Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine("Hello " + userName +", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                    if (userName == "")//Что-нибудь придумать с именем из системы, либо оставить приветствие без него
+                    {
+                        //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;//Имя системы
+                        //string userName = Environment.UserName;//Имя пользователя в users
+                        //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+
+                        Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/echo\", \"/exit\".");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/echo\", \"/exit\".");
+                    }
+                    consoleGlobalArguments = Console.ReadLine();
                 }
-                consoleGlobalArguments = Console.ReadLine();
+                
 
                 if (consoleGlobalArguments != null && consoleGlobalArguments.Length >= 4)
                 {
@@ -93,7 +120,7 @@ namespace ConsoleToDoListTestProject
         }
         private bool ArgumentHandler()//Переписать чтобы вместо возврата bool было по нормальному
         {
-            switch (consoleCommand)
+            switch (consoleCommand)//сделать два свича для programmStart с true и false
             {
                 case "start":
                     CommandStart();
@@ -107,7 +134,7 @@ namespace ConsoleToDoListTestProject
                 case "exit":
                     Console.WriteLine("Exit from program");
                     return true;
-                case "echo":
+                case string tempstring when tempstring == "echo" && programmStarted:
                     CommandEcho();
                     break;
                 default:
@@ -116,24 +143,34 @@ namespace ConsoleToDoListTestProject
             }
             return false;
         }
-        private void CommandEcho()//Console write arguments after command \echo
+        /// <summary>
+        /// Console write arguments after command \echo
+        /// </summary>
+        private void CommandEcho()
         {
             Console.WriteLine(consoleArguments);
         }
-        private void CommandInfo()//Console write verion and data creation of programm
+        /// <summary>
+        /// Console write verion and data creation of programm
+        /// </summary>
+        private void CommandInfo()
         {
             Console.WriteLine("Program version: 0.2 console app");
             Console.WriteLine("Data creation: 26.11.24");
+            //Assembly.GetExecutingAssembly().FullName;//добавить парсер имени и версии
         }
-        private void CommandHelp()//Console write arguments after command \echo
+        /// <summary>
+        /// Console write arguments after command \echo
+        /// </summary>
+        private void CommandHelp()
         {
-            switch (consoleArguments)
+            switch (consoleArguments)//сделать два свича для programmStart с true и false
             {
                 case "":
                     Console.WriteLine("To use the program, press the command with the \"/\" symbol, showed at the beginning of the program.");
                     break;
                 case "/start":
-                    Console.WriteLine("/start");//Need to complite
+                    Console.WriteLine("/start get name from user");//Сделать внятное описание
                     break;
                 case "/help":
                     Console.WriteLine("/help show information about commands");//Сдалять внятное описание
@@ -144,7 +181,7 @@ namespace ConsoleToDoListTestProject
                 case "/exit":
                     Console.WriteLine("/exit command to close programm");
                     break;
-                case "/echo":
+                case string tempstring when tempstring == "/echo" && programmStarted:
                     Console.WriteLine("/echo write to console arguments after command \\echo");
                     break;
                 default:
@@ -152,17 +189,18 @@ namespace ConsoleToDoListTestProject
                     break;
             }
         }
-        private void CommandStart()//Get userName from user
+        /// <summary>
+        /// Get userName from user and start programm;
+        /// </summary>
+        private void CommandStart()//сделать нормальную обработку имени если пусто зарание, а не в методе присвоения имени
         {
-            if(userName == "")
+            programmStarted = true;
+            Console.WriteLine("Programm start.");//сделать нормальное описание старта программы
+            if (userName == "")
             {
                 Console.WriteLine("Hello unnamed user, please inpute your name");
                 string inputText = Console.ReadLine();
-                if (inputText != "" && inputText != null)
-                {
-                    userName = inputText;
-                    Console.WriteLine("Now your you name is " + userName);
-                }
+                SetNewUserName(inputText);
             }
             else
             {
@@ -170,12 +208,21 @@ namespace ConsoleToDoListTestProject
                     userName + ", input your new name, or just press enter to continue.");
 
                 string inputText = Console.ReadLine();
-                if(inputText != "" && inputText != null)
+                SetNewUserName(inputText);
+            }
+        }
+        private void SetNewUserName(string newUserName)
+        {
+            if (newUserName != "" && newUserName != null)
+            {
+                userName = newUserName;
+                Console.WriteLine("Now your you name is " + userName);
+                using (StreamWriter writer = new StreamWriter(pathUserName, false))
                 {
-                    userName = inputText;
-                    Console.WriteLine("Now your you name is " + userName);
+                    writer.WriteLine(userName);
                 }
             }
+
         }
     }
 }
