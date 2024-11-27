@@ -20,12 +20,13 @@ namespace ConsoleToDoListTestProject
             consoleCommand = new string("");
             consoleArguments = new string("");
 
+            //Если файла нет
             using (StreamReader reader = new StreamReader(pathUserName))//Reading saved username
             {
-                string text = reader.ReadLine();
-                if (text != null || text != "")
+                string inputText = reader.ReadLine();
+                if (inputText != null && inputText != "")
                 {
-                    userName = text;
+                    userName = inputText;
                 }
                 else
                 {
@@ -151,11 +152,30 @@ namespace ConsoleToDoListTestProject
                     break;
             }
         }
-        private void CommandStart()//Get name from user
+        private void CommandStart()//Get userName from user
         {
+            if(userName == "")
+            {
+                Console.WriteLine("Hello unnamed user, please inpute your name");
+                string inputText = Console.ReadLine();
+                if (inputText != "" && inputText != null)
+                {
+                    userName = inputText;
+                    Console.WriteLine("Now your you name is " + userName);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Hello " + userName + ", if your name is not " + 
+                    userName + ", input your new name, or just press enter to continue.");
 
-            Console.WriteLine("Program version: 0.2 console app");
-            Console.WriteLine("Data creation: 26.11.24");
+                string inputText = Console.ReadLine();
+                if(inputText != "" && inputText != null)
+                {
+                    userName = inputText;
+                    Console.WriteLine("Now your you name is " + userName);
+                }
+            }
         }
     }
 }
