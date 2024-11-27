@@ -7,7 +7,8 @@
             ViewHandler viewhandler = new ViewHandler();
             viewhandler.InputAwaiter();
 
-            Console.WriteLine("Program complite!/nPress any key.");
+            Console.WriteLine("Program complite!");
+            Console.WriteLine("Press any key.");
         }
     }
 }

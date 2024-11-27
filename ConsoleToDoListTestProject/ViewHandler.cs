@@ -8,32 +8,65 @@ namespace ConsoleToDoListTestProject
 {
     internal class ViewHandler
     {
-        private string consoleArguments;
+        private string consoleGlobalArguments;
         private string consoleCommand;
+        private string consoleArguments;
 
         public ViewHandler()
         {
-            consoleArguments = new string("");
+            consoleGlobalArguments = new string("");
         }
         public void InputAwaiter()
         {
-            Console.WriteLine("Input comand /start, /help, /info, /exit.");
-            consoleArguments = Console.ReadLine();
+            bool exitFlag = false;//false is meaning not exit circle
+            do
+            {
+                Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
+                consoleGlobalArguments = Console.ReadLine();
 
-            consoleCommand = GettingCommandFromArguments();
+                if (consoleGlobalArguments != null && consoleGlobalArguments.Length >= 4)
+                {
+                    if (consoleGlobalArguments[0] == '/')
+                    {
+                        consoleGlobalArguments = consoleGlobalArguments.Substring(1);//remove '/' from begin
+                        consoleCommand = GettingCommandFromArguments();
+                        consoleArguments = GettingArgumentsForCommandFromGlobalArguments();
 
-            //обработчик аргументов с вызовом
+                        //обработчик аргументов с вызовом
 
-            ArgumentHandler();
+                        exitFlag = ArgumentHandler();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input command begin with /, please input correct command");
+                    }
+                }
+                else if (consoleGlobalArguments == null)
+                {
+                    Console.WriteLine("String are empty, please input correct command");
+                }
+                else if (consoleGlobalArguments.Length < 4)
+                {
+                    Console.WriteLine("String too short, please input correct command");
+                }
+                else
+                {
+                    Console.WriteLine("String input incorrect, please input correct command");
+                }
+            } while (!exitFlag);
 
         }
         private string GettingCommandFromArguments()
         {
-            consoleArguments = consoleArguments.Substring(1);
-            int PositionOfSpace = consoleArguments.IndexOf(' ');
-            return PositionOfSpace >= 0 ? consoleArguments.Substring(0, PositionOfSpace) : consoleArguments;
+            int PositionOfSpace = consoleGlobalArguments.IndexOf(' ');
+            return PositionOfSpace >= 0 ? consoleGlobalArguments.Substring(0, PositionOfSpace) : consoleGlobalArguments;
         }
-        private void ArgumentHandler()
+        private string GettingArgumentsForCommandFromGlobalArguments()
+        {
+            int PositionOfSpace = consoleGlobalArguments.IndexOf(' ');
+            return PositionOfSpace >= 0 ? consoleGlobalArguments.Substring(PositionOfSpace + 1) : "";
+        }
+        private bool ArgumentHandler()//Переписать чтобы вместо возврата bool было по нормальному
         {
             //реализовать проверку первой команды с вызовом их методов
             switch (consoleCommand)
@@ -43,16 +76,40 @@ namespace ConsoleToDoListTestProject
                 case "help":
                     break;
                 case "info":
+                    CommandInfo();
                     break;
                 case "exit":
                     Console.WriteLine("Exit from program");
-                    break;
+                    return true;
                 case "echo":
+                    CommandEcho();
                     break;
                 default:
+                    Console.WriteLine("There is no such command like \"" + consoleCommand + '\"');
+                    break;
+            }
+            return false;
+        }
+        private void CommandEcho()//Console write arguments after command \echo
+        {
+            Console.WriteLine(consoleArguments);
+        }
+        private void CommandInfo()//Console write verion and data creation of programm
+        {
+            Console.WriteLine("Program version: 0.2 console app");
+            Console.WriteLine("Data creation: 26.11.24");
+        }
+        private void CommandHelp()//Console write arguments after command \echo
+        {
+            switch(consoleArguments)
+            {
+                case "":
+                    Console.WriteLine("/help show information about commands");
+                    break;
+                case "/start":
+                    Console.WriteLine("/start show information about commands");
                     break;
             }
         }
-
     }
 }
