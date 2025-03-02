@@ -61,10 +61,6 @@ namespace ConsoleToDoListTestProject
                 {
                     if (userName == "")
                     {
-                        //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;//Имя системы
-                        //string userName = Environment.UserName;//Имя пользователя в users
-                        //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
-
                         Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/echo\", " +
                             "\"/addtask\", \"/showtasks\", \"/removetask\", \"/exit\".");
                     }
