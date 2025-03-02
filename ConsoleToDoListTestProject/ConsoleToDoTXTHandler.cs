@@ -11,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleToDoListTestProject
 {
-    internal class ConsoleToDoTXTHandler
+    public class ConsoleToDoTXTHandler
     {
 
         private readonly string pathToDoList = @".\ToDoList.txt";

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleToDoListTestProject
 {
-    internal class ViewHandler
+    public class ViewHandler
     {
         private string consoleGlobalArguments;
         private string consoleCommand;
