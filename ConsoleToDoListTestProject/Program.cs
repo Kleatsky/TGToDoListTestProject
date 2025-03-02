@@ -10,7 +10,6 @@
             Console.WriteLine("Program complite!");
             Console.WriteLine("Press any key.");
             Console.ReadKey();
-            AsyncLocalValueChangedArgs;
         }
     }
 }
