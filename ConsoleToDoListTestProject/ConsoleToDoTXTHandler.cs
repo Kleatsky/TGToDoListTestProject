@@ -11,23 +11,47 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleToDoListTestProject
 {
-    internal class ConsoleToDoTXTHandler
+    public class ConsoleToDoTXTHandler
     {
 
         private readonly string pathToDoList = @".\ToDoList.txt";
+        private List<string> toDoList;
         public ConsoleToDoTXTHandler()
         {
-        }
-        public void ShowToDoList()
-        {
+
             if (File.Exists(pathToDoList))
             {
                 string[] ReadAllLines = File.ReadAllLines(pathToDoList);
+                toDoList = new List<string>(ReadAllLines.Length);
                 foreach (string ReadLine in ReadAllLines)
                 {
-                    Console.WriteLine(ReadLine);
+                    toDoList.Add(ReadLine);
                 }
             }
+
+        }
+        public void ShowToDoList()
+        {
+            if (toDoList.Count == 0 || toDoList == null)
+            {
+                Console.WriteLine("ToDoList is empty.");
+            }
+            else
+            {
+                foreach (string task in toDoList)
+                {
+                    Console.WriteLine(task);
+                }
+            }
+
+            //if (File.Exists(pathToDoList))
+            //{
+            //    string[] ReadAllLines = File.ReadAllLines(pathToDoList);
+            //    foreach (string ReadLine in ReadAllLines)
+            //    {
+            //        Console.WriteLine(ReadLine);
+            //    }
+            //}
         }
 
         public void AddTaskToDoList()
@@ -36,25 +60,60 @@ namespace ConsoleToDoListTestProject
             {
                 Console.WriteLine("Write task to add.");
                 string newTask = Console.ReadLine();
-                if (newTask == "")
-                {
-                    Console.WriteLine("New task is empty");
-                }
-                else if (newTask == null)
+                if (string.IsNullOrEmpty(newTask))
                 {
                     Console.WriteLine("New task is empty");
                 }
                 else
                 {
+                    toDoList.Add(newTask);
                     using (StreamWriter writer = new StreamWriter(pathToDoList, true))
                     {
                         writer.WriteLine(newTask);
-                        Console.WriteLine("Task " + newTask + " added.");
+                        Console.WriteLine("Task \"" + newTask + "\" was added.");
                     }
                 }
             }
         }
         public void RemoveTaskToDoList()
+        {
+            if (toDoList.Count == 0 || toDoList == null)
+            {
+                Console.WriteLine("ToDoList is empty.");
+            }
+            else
+            {
+                int linesCount = toDoList.Count();
+                int currentElementIndex = 0;
+                int positionDelete;
+                foreach (string ReadLine in toDoList)
+                {
+                    currentElementIndex++;
+                    Console.WriteLine(currentElementIndex + " " + ReadLine);
+                }
+                Console.WriteLine("Which task do you want to delite? (enter the number)");
+                string tempstring = Console.ReadLine();//заменить tempstring
+                bool success = int.TryParse(tempstring, out positionDelete);
+                if (!success)
+                {
+                    Console.WriteLine(tempstring + " is not a number");
+                }
+                else
+                {
+                    if (positionDelete < 0 || positionDelete > linesCount)
+                    {
+                        Console.WriteLine("There is no such the number of task.");
+                    }
+                    else
+                    {
+                        positionDelete--;//Because we show index to user started from 1 insted of 0
+                        toDoList.RemoveAt(positionDelete);
+                        File.WriteAllLines(pathToDoList, toDoList);
+                    }
+                }
+            }
+        }
+        private void RemoveTaskFromFile()
         {
             if (File.Exists(pathToDoList))
             {
@@ -82,7 +141,7 @@ namespace ConsoleToDoListTestProject
                     }
                     else
                     {
-                        positionDelete--;//Becouse we show index to user started from 1 insted of 0
+                        positionDelete--;//Because we show index to user started from 1 insted of 0
                         List<string> tmp = new List<string>(ToDoList);
                         tmp.RemoveAt(positionDelete);
                         ToDoList = tmp.ToArray();
