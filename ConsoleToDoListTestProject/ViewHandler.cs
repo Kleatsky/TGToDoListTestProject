@@ -69,11 +69,13 @@ namespace ConsoleToDoListTestProject
                         //string userName = Environment.UserName;//Имя пользователя в users
                         //Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/exit\".");
 
-                        Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/echo\", \"/exit\".");
+                        Console.WriteLine("Please input comand \"/start\", \"/help\", \"/info\", \"/echo\", " +
+                            "\"/addtask\", \"/showtasks\", \"/removetask\", \"/exit\".");
                     }
                     else
                     {
-                        Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/echo\", \"/exit\".");
+                        Console.WriteLine("Hello " + userName + ", please input comand \"/start\", \"/help\", \"/info\", \"/echo\", " +
+                            "\"/addtask\", \"/showtasks\", \"/removetask\", \"/exit\".");
                     }
                     consoleGlobalArguments = Console.ReadLine();
                 }
@@ -140,13 +142,13 @@ namespace ConsoleToDoListTestProject
                 case string tempstring when tempstring == "echo" && programmStarted:
                     CommandEcho();
                     break;
-                case string tempstring when tempstring == "ShowToDoList" && programmStarted:
+                case string tempstring when tempstring == "showtasks" && programmStarted:
                     consoleToDoTXTHandler.ShowToDoList();
                     break;
-                case string tempstring when tempstring == "AddTaskToDoList" && programmStarted:
+                case string tempstring when tempstring == "addtask" && programmStarted:
                     consoleToDoTXTHandler.AddTaskToDoList();
                     break;
-                case string tempstring when tempstring == "RemoveTaskToDoList" && programmStarted:
+                case string tempstring when tempstring == "removetask" && programmStarted:
                     consoleToDoTXTHandler.RemoveTaskToDoList();
                     break;
                 default:
@@ -182,19 +184,28 @@ namespace ConsoleToDoListTestProject
                     Console.WriteLine("To use the program, press the command with the \"/\" symbol, showed at the beginning of the program.");
                     break;
                 case "/start":
-                    Console.WriteLine("/start get name from user");//Сделать внятное описание
+                    Console.WriteLine("/start get name from user.");//Сделать внятное описание
                     break;
                 case "/help":
-                    Console.WriteLine("/help show information about commands");//Сдалять внятное описание
+                    Console.WriteLine("/help show information about commands.");//Сдалять внятное описание
                     break;
                 case "/info":
-                    Console.WriteLine("/info show information about verion and data creation of programm");
+                    Console.WriteLine("/info show information about verion and data creation of programm.");
                     break;
                 case "/exit":
-                    Console.WriteLine("/exit command to close programm");
+                    Console.WriteLine("/exit command to close programm.");
                     break;
                 case string tempstring when tempstring == "/echo" && programmStarted:
                     Console.WriteLine("/echo write to console arguments after command \\echo");
+                    break;
+                case string tempstring when tempstring == "/addtask" && programmStarted:
+                    Console.WriteLine("/addtask ask you to add new task to ToDoList.");
+                    break;
+                case string tempstring when tempstring == "/showtasks" && programmStarted:
+                    Console.WriteLine("/showtasks show you your ToDoList.");
+                    break;
+                case string tempstring when tempstring == "/removetask" && programmStarted:
+                    Console.WriteLine("/removetask remove task from your ToDoList.");
                     break;
                 default:
                     Console.WriteLine("There is no such command like \"" + consoleArguments + '\"');
